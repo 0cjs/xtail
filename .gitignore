@@ -1,0 +1,9 @@
+/Makefile
+/config.cache
+/config.h
+/config.log
+/config.status
+/entryfuncs.o
+/miscfuncs.o
+/xtail
+/xtail.o
