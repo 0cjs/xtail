@@ -217,26 +217,32 @@ void show_status(void)
 {
     int i, n;
     struct tm *tp;
+/*
     static char *monname[] = {
 	"Jan", "Feb", "Mar", "Apr", "May", "Jun",
 	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     };
+*/
     static time_t tval0;
     time_t tval;
 
     /* give user a hint if they are whacking on SIGINT */
     time(&tval);
-    if (tval0 != 0 && difftime(tval, tval0) < 3)
+/*  if (tval0 != 0 && difftime(tval, tval0) < 3)
 	(void) printf("(note: use \"%s\" SIQUIT to exit program)\n", quit_ch());
     tval0 = tval;
-
+*/
     (void) printf("\n*** recently changed files ***\n");
     for (i = 0, n = 0 ; i < List_file->num_entries ; ++i) {
 	if (List_file->list[i]->fd > 0) {
 	    tp = localtime(&List_file->list[i]->mtime);
-	    (void) printf("%4d  %2d-%3s-%02d %02d:%02d:%02d  %s\n",
+	    (void) printf("%4d  %d-%02d-%02d %02d:%02d:%02d  %s\n",
 		++n,
-		tp->tm_mday, monname[tp->tm_mon], (tp->tm_year % 100),
+		tp->tm_year + 1900,
+		tp->tm_mon + 1,
+		tp->tm_mday,
+/*		monname[tp->tm_mon], */
+/*		(tp->tm_year % 100), */
 		tp->tm_hour, tp->tm_min, tp->tm_sec,
 		List_file->list[i]->name
 	    );

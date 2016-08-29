@@ -1,5 +1,5 @@
 /* $Id: xtail.c,v 2.5 2000/06/04 09:09:03 chip Exp $ */
-
+#include <string.h>
 #include "config.h"
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -140,12 +140,10 @@ int main(int argc, char *argv[])
 
 	/*
 	 * Display what we are watching if a SIGINT was caught.
-	 */
 	if (sigcaught) {
-	    show_status();
 	    sigcatcher(0);
 	}
-
+	*/
 
 	/*
 	 * Go through all of the files looking for changes.
@@ -375,8 +373,15 @@ int main(int argc, char *argv[])
 
 RETSIGTYPE sigcatcher(int sig)
 {
-    if (sig == SIGQUIT)
-	(void) exit(0);
+    if (sig == SIGINT)
+    {
+	show_status();
+	printf("Exit (y/N)? ");
+	int ch = getchar();
+
+	if ( (ch == (int)'y') || (ch == (int)'Y') )
+	    (void) exit(0);
+    }
     sigcaught = sig;
 #ifdef STATUS_ENAB
     (void) signal(SIGINT, sigcatcher);
